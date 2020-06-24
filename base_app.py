@@ -53,8 +53,7 @@ def main():
 	if selection == "Information":
 		st.info("General Information")
 		# You can read a markdown file from supporting resources folder
-		st.markdown("Some information here")
-
+st.markdown("Many companies are built around lessening one’s environmental impact or carbon footprint. They offer products and services that are environmentally friendly and sustainable, in line with their values and ideals. They would like to determine how people perceive climate change and whether or not they believe it is a real threat. This would add to their market research efforts in gauging how their product/service may be received.")
 		st.subheader("Raw Twitter data and label")
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
 			st.write(raw[['sentiment', 'message']]) # will write the df to the page
@@ -78,6 +77,6 @@ def main():
 			# more human interpretable.
 			st.success("Text Categorized as: {}".format(prediction))
 
-# Required to let Streamlit instantiate our web app.  
+# Required to let Streamlit instantiate our web app.
 if __name__ == '__main__':
 	main()
