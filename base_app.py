@@ -53,7 +53,7 @@ def main():
 	if selection == "Information":
 		st.info("General Information")
 		# You can read a markdown file from supporting resources folder
-		st.markdown("Some information here")
+		st.markdown("our Information here with the team will be the bomb at the end of this predict")
 
 		st.subheader("Raw Twitter data and label")
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
@@ -78,6 +78,6 @@ def main():
 			# more human interpretable.
 			st.success("Text Categorized as: {}".format(prediction))
 
-# Required to let Streamlit instantiate our web app.  
+# Required to let Streamlit instantiate our web app.
 if __name__ == '__main__':
 	main()
