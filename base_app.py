@@ -46,18 +46,27 @@ def main():
 
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
-	options = ["Prediction", "Information"]
+	options = ["Prediction", "Information", "Exploratory Data Analysis", "Conclusion"]
 	selection = st.sidebar.selectbox("Choose Option", options)
 
 	# Building out the "Information" page
 	if selection == "Information":
 		st.info("General Information")
 		# You can read a markdown file from supporting resources folder
-		st.markdown("our Information here with the team will be the bomb at the end of this predict")
+		st.markdown("Many companies are built around lessening one’s environmental impact or carbon footprint. They offer products and services that are environmentally friendly and sustainable, in line with their values and ideals. They would like to determine how people perceive climate change and whether or not they believe it is a real threat. This would add to their market research efforts in gauging how their product/service may be received.")
 
 		st.subheader("Raw Twitter data and label")
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
 			st.write(raw[['sentiment', 'message']]) # will write the df to the page
+
+	# Building out the Exploratory Data Analysis page
+	if selection == "Exploratory Data Analysis":
+		st.info("Tweet Data Insights")
+		st.markdown("describe what data insights are here")
+
+		st.subheader("EDA Visualisations")
+		st.checkbox('Show Visuals')
+
 
 	# Building out the predication page
 	if selection == "Prediction":
@@ -77,6 +86,11 @@ def main():
 			# You can use a dictionary or similar structure to make this output
 			# more human interpretable.
 			st.success("Text Categorized as: {}".format(prediction))
+	
+	# Building out the Conclusion page
+	if selection == "Conclusion":
+		st.info("Conclusion")
+		st.markdown("Write what we concluded on here")
 
 # Required to let Streamlit instantiate our web app.
 if __name__ == '__main__':
