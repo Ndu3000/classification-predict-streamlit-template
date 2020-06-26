@@ -111,12 +111,30 @@ def main():
 
 
     # Building out the Exploratory Data Analysis page
+    #Importing Data
+    my_dataset = 'train.csv'
+
     if selection == "Exploratory Data Analysis":
         st.info("Tweet Data Insights")
         st.markdown("describe what data insights are here")
 
-        st.subheader("EDA Visualisations")
+    #Loading Dataset
+    def explore_data(dataset):
+        train_df = pd.read_csv(os.path.join(dataset))
+        return train_df
+
+    if st.checkbox('Preview Dataset'):
+        data = explore_data(my_dataset)
+        if st.button('Head'):
+            st.write(data.head())
+
+        st.checkbox('Preview DataFrame')
+        st.checkbox('Show All DataFrame')
+        st.checkbox('Show All Column Names')
+        
+    if st.subheader("EDA Visualisations"):
         st.checkbox('Show Visuals')
+
 
 
     # Building out the predication page
