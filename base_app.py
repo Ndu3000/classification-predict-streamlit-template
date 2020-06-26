@@ -119,21 +119,76 @@ def main():
         st.markdown("describe what data insights are here")
 
     #Loading Dataset
+    @st.cache(persist=True)
     def explore_data(dataset):
         train_df = pd.read_csv(os.path.join(dataset))
         return train_df
 
-    if st.checkbox('Preview Dataset'):
         data = explore_data(my_dataset)
-        if st.button('Head'):
-            st.write(data.head())
+
+        if st.checkbox('Preview Dataset'):
+            #data = explore_data(my_dataset)
+            if st.button('Head'):
+                st.write(data.head())
+            elif st.button('Tail'):
+                st.write(data.tail())
+            else:
+                st.write(data.head(2))
+        #Show entire Dataset
+        if st.checkbox('Show all Dataset'):
+            st.write(data)
+
+        #Show Column Names
+        if st.checkbox('Show Column Names'):
+            st.write(data.columns)
+
+        #Show Dimensions
+        data_dim = st.radio('What Dimensions Do You Want to See?',('Rows'),('Columns')
+        if data_dim == 'Rows':
+            st.text('Showing Rows')
+            st.write(data.shape[0])
+        elif data_dim == 'Columns':
+            st.text('Showing Columns')
+            st.write(data.shape[1])
+
+        #Show Summary
+        st.checkbox('Show Summary of Datasets'):
+            st.write(data.describe)
+
+        #Select a Column
+        col = st.selectbox('Select Column', ('','','','','',''))
+        if col == '':
+            st.write(data[''])
+        elif col == '':
+            st.write(data[''])
+        elif col == '':
+            st.write(data[''])
+        elif col == '':
+            st.write(data[''])
+        elif col == '':
+            st.write(data[''])
+        else:
+            st.write('Select Column')
+
+        #Add Plots
+        st.checkbox('Show Bar Plot with Matplotlib'):
+            st.write(data.plot(kind='bar'))
+            st.pyplot()
+
+        #Group
+        if st.checkbox('Show Bart Chart Plot'):
+            group = data.groupby('put in name of the column HERE')
+            st.bar_chart(group)
+
+
+        #Add Pie Chart
 
         st.checkbox('Preview DataFrame')
         st.checkbox('Show All DataFrame')
         st.checkbox('Show All Column Names')
-        
-    if st.subheader("EDA Visualisations"):
-        st.checkbox('Show Visuals')
+            
+        if st.subheader("EDA Visualisations"):
+            st.checkbox('Show Visuals')
 
 
 
