@@ -111,12 +111,12 @@ def main():
 
 
     # Building out the Exploratory Data Analysis page
-    #Importing Data
-    my_dataset = 'train.csv'
-
     if selection == "Exploratory Data Analysis":
         st.info("Tweet Data Insights")
         st.markdown("describe what data insights are here")
+
+    #Importing Data
+    my_dataset = 'train.csv'
 
     #Loading Dataset
     @st.cache(persist=True)
