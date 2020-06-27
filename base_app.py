@@ -116,7 +116,7 @@ def main():
         st.markdown("describe what data insights are here")
 
     #Importing Data
-    my_dataset = 'train.csv'
+    my_dataset = 'resources/train.csv'
 
     #Loading Dataset
     @st.cache(persist=True)
@@ -124,7 +124,14 @@ def main():
         train_df = pd.read_csv(os.path.join(dataset))
         return train_df
 
-        data = explore_data(my_dataset)
+    data = explore_data(my_dataset)
+
+
+    if selection == "Exploratory Data Analysis":
+        st.header("Exploratory Data Analysis refers to the critical process of performing initial investigations on data so as to discover patterns,to spot anomalies,to test hypothesis and to check assumptions with the help of summary statistics and diagramatic representations")
+        st.info("Tweet Data Insights")
+        st.markdown("describe what data insights are here")
+        
 
         if st.checkbox('Preview Dataset'):
             #data = explore_data(my_dataset)
@@ -143,7 +150,7 @@ def main():
             st.write(data.columns)
 
         #Show Dimensions
-        data_dim = st.radio('What Dimensions Do You Want to See?',('Rows'),('Columns')
+        data_dim = st.selectbox('What Dimensions Do You Want to See?',['Rows','Columns'])
         if data_dim == 'Rows':
             st.text('Showing Rows')
             st.write(data.shape[0])
@@ -152,28 +159,24 @@ def main():
             st.write(data.shape[1])
 
         #Show Summary
-        st.checkbox('Show Summary of Datasets'):
-            st.write(data.describe)
+        st.checkbox('Show Summary of Datasets')
+        st.write(data.describe)
 
         #Select a Column
-        col = st.selectbox('Select Column', ('','','','','',''))
-        if col == '':
-            st.write(data[''])
-        elif col == '':
-            st.write(data[''])
-        elif col == '':
-            st.write(data[''])
-        elif col == '':
-            st.write(data[''])
-        elif col == '':
-            st.write(data[''])
+        col = st.selectbox('Select Column', ('sentiment','message','tweetid'))
+        if col == 'sentiment':
+            st.write(data['sentiment'])
+        elif col == 'message':
+            st.write(data['message'])
+        elif col == 'tweetid':
+            st.write(data['tweetid'])
         else:
             st.write('Select Column')
 
         #Add Plots
-        st.checkbox('Show Bar Plot with Matplotlib'):
-            st.write(data.plot(kind='bar'))
-            st.pyplot()
+        st.checkbox('Show Bar Plot with Matplotlib')
+        st.write(data.plot(kind='bar'))
+        st.pyplot()
 
         #Group
         if st.checkbox('Show Bart Chart Plot'):
