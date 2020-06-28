@@ -24,19 +24,24 @@
 # Streamlit dependencies
 import streamlit as st
 import joblib,os
-
+from sklearn.feature_extraction.text import CountVectorizer
 # Data dependencies
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plot
-import seaborn as sns 
-#from PIL import image
-import pprint
+#import pprint
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import matplotlib.pyplot as plt
+import seaborn as sns
+# Set plot style for data visualisation
+sns.set()
+from PIL import Image
 #import spacy
 #nlp= spacy.load('en')
 #NLP Packages
 #from wordcloud import WordCloud
-#from textblob import TextBlob 
+#from textblob import TextBlob
 
 # Vectorizer
 news_vectorizer = open("resources/tfidfcountvect.pkl","rb")  #Vectorized with both the tfidf and counterVector combined using sparse
@@ -64,6 +69,7 @@ def main():
     # these are static across all pages
     st.title("Tweet Classifer")
     st.subheader("Climate change tweet classification")
+    # Using PIL
 
     # Creating sidebar with selection box -
     # you can create multiple pages this way
@@ -72,58 +78,69 @@ def main():
 
     # Building out the "Information" page
     if selection == "Information":
+        image = Image.open('img5.png')
+        st.image(image, caption=None, use_column_width=True)
         st.info("General Information")
         # You can read a markdown file from supporting resources folder
         st.markdown("Many companies are built around lessening one’s environmental impact or carbon footprint. They offer products and services that are environmentally friendly and sustainable, in line with their values and ideals. They would like to determine how people perceive climate change and whether or not they believe it is a real threat. This would add to their market research efforts in gauging how their product/service may be received.")
         #st.subheader("Who should use this tool")
-        st.subheader("Benefits of using this tool")
+        st.subheader("==========================================================")
+        st.subheader("Benefits of using this classification tool")
+        st.subheader("==========================================================")
+        st.markdown("1. Quicker near real-time results compared to a survey without having to pay for expensive reports")
+        st.markdown("2. Easily accessible on your internet browser")
+        st.markdown("3. You don't need to understand complicated statistical techniques, just need to understand insights")
         st.markdown("If you are a startup or even an established business looking to launch a new product, are you aware of your potential customers sentiments regarding climate change? As a not for profit organisation looking for donors for environmental projects, do you know what your donors thoughts are regarding climate change? Knowing this information can help you better prepare to take your organisations strategy forward. Not knowing this information can make you seem irrelevant to your target market and cause you to miss out on an opporunity of a lifetime. The tweet classifier will help you be more prepared and relevant to your audience.")
+        st.subheader("==========================================================")
         st.subheader("Instructions for using this tool")
+        st.subheader("==========================================================")
         st.markdown("Let us help you turn insights from your potential customers to action.")
         st.markdown("Get started by:")
         st.markdown("1. Navigating to the sidebar at the top left of this page")
         st.markdown("2. Choose an option by clicking the 'Choose Option' dropdown")
         st.markdown("3. Select the option you wish to view")
         st.markdown("4. Get insights that will help you be better prepared")
-        st.subheader("Example chart: What are the most frequent opinions regarding climate change?")
+        if st.checkbox('Choose to Preview Example'):
+            st.subheader("Example chart: What are the most frequent opinions regarding climate change?")
 
-        import plotly.figure_factory as ff
-        # Add histogram data
-        x1 = np.random.randn(200) + 1
-        x2 = np.random.randn(200)
-        x3 = np.random.randn(200)
-        x4 = np.random.randn(200) - 1
-
-
-        # Group data together
-        hist_data = [x1, x2, x3, x4]
-
-        group_labels = ['Anti: -1', 'Neutral: 0', 'Pro: 1', 'News: 2']
-
-         # Create distplot with custom bin_size
-        fig = ff.create_distplot(
-        hist_data, group_labels, bin_size=[.1, .25, .5, .75])
-
-        # Plot!
-        st.plotly_chart(fig, use_container_width=True)
-
-        st.markdown("Your conclusion from the above example chart may be that those who are against ('Anti:-1') climate change are likely to have tweet more about  their opinions. The resulting insight from this tool may help you with your next step for formulating your brand messaging and positioning etc.")
-                #chart_data1 = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
-        #st.line_chart(chart_data1)
+            import plotly.figure_factory as ff
+            # Add histogram data
+            x1 = np.random.randn(200) + 1
+            x2 = np.random.randn(200)
+            x3 = np.random.randn(200)
+            x4 = np.random.randn(200) - 1
 
 
-        #if st.checkbox('Show raw data'): # data is hidden if box is unchecked
-            #st.write(raw[['sentiment', 'message']]) # will write the df to the page
+            # Group data together
+            hist_data = [x1, x2, x3, x4]
 
-        st.subheader("Raw Twitter data and label")
+            group_labels = ['Anti: -1', 'Neutral: 0', 'Pro: 1', 'News: 2']
 
-        st.markdown("The collection of this data which we use as our data source was funded by a Canada Foundation for Innovation JELF Grant to Chris Bauch, University of Waterloo. The dataset aggregates tweets pertaining to climate change collected between Apr 27, 2015 and Feb 21, 2018. In total, 43943 tweets were collected. Each tweet is labelled as one of the following classes in the table below:")
+             # Create distplot with custom bin_size
+            fig = ff.create_distplot(
+            hist_data, group_labels, bin_size=[.1, .25, .5, .75])
+
+            # Plot!
+            st.plotly_chart(fig, use_container_width=True)
+
+            st.markdown("Your conclusion from the above example chart may be that those who are against ('Anti:-1') climate change are likely to have tweet more about  their opinions. The resulting insight from this tool may help you with your next step for formulating your brand messaging and positioning etc.")
+            #chart_data1 = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
+            #st.line_chart(chart_data1)
+
         chart_data2 = {'Class':['2', '1', '0', '-1'], 'Description':['News: the tweet links to factual news about climate change', 'Pro: the tweet supports the belief of man-made climate change', 'Neutral: the tweet neither supports nor refutes the belief of man-made climate change', 'Anti: the tweet does not believe in man-made climate change']}
         df = pd.DataFrame(chart_data2)
         blankIndex=[''] * len(df)
         df.index=blankIndex
+        st.subheader("==========================================================")
         st.subheader("Table: Data dictionary")
+        st.subheader("==========================================================")
         st.table(df)
+        st.subheader("==========================================================")
+        st.subheader("Raw Twitter data and label")
+        st.subheader("==========================================================")
+        st.markdown("The collection of this data which we use as our data source was funded by a Canada Foundation for Innovation JELF Grant to Chris Bauch, University of Waterloo. The dataset aggregates tweets pertaining to climate change collected between Apr 27, 2015 and Feb 21, 2018. In total, 43943 tweets were collected. Each tweet is labelled as one of the following classes in the table below:")
+
+
         st.markdown("Select tickbox to view raw data where the 'sentiment'column denotes the 'class' column in the above data dictionary table which is associated to a description ranging from 'Anti' to'News' as descriptions for tweet messages that classify a range people that do not believe to those that believe in climate change respectively.")
         if st.checkbox('Show raw data'): # data is hidden if box is unchecked
             st.write(raw[['sentiment', 'message']]) # will write the df to the page
@@ -133,82 +150,146 @@ def main():
     if selection == "Exploratory Data Analysis":
         st.markdown("Exploratory Data Analysis refers to the critical process of performing initial investigations on data so as to discover patterns,to spot anomalies,to test hypothesis and to check assumptions with the help of summary statistics and diagramatic representations")
         st.info("Tweet Data Insights")
-        st.markdown("describe what data insights are here")
 
-    #Importing Data
-    my_dataset = 'resources/train.csv'
+        st.subheader("General Insights")
+        st.markdown("A subset of the dataset denoted by the 'Head' and the 'Tail' shows what raw tweet data looks like when placed in rows and columns. Building on our definition of the four sentiment classes defined in the information page, a handful of graphical plots are used to show the distribution of tweets by deniers and belivers of climate change. This includes:")
+        st.markdown("1. Which proportion of tweets belong to the believer versus the denier group (or neutral) group. This can show which views are most widely help if we use tweets as our proxy for climate change belief sentiment i.e. Use Bar chart plot, Pie chart and Word Count plots to get a sense of the more widely held beliefs of climate change.")
+        st.markdown("2. Which common words exist and were predominantly in describing climate change i.e. Use the Word Cloud and ngram (Unigram, Bigram etc) plots to see what words were most prevelant amongst the climate change sentiment tweets.")
+    #my_dataset = 'resources/train.csv'
 
     #Loading Dataset
-    @st.cache(persist=True)
-    def explore_data(dataset):
-        train_df = pd.read_csv(os.path.join(dataset))
-        return train_df
+    #@st.cache(persist=True)
+    #def explore_data(dataset):
+        #train_df = pd.read_csv(os.path.join(dataset))
+        #return train_df
 
-    data = explore_data(my_dataset) 
-        
-    #showing what our dataset is
-    if st.checkbox('Preview Dataset'):
-        #data = explore_data(my_dataset)
-        if st.button('Head'):
-            st.write(data.head())
-        elif st.button('Tail'):
-            st.write(data.tail())
-        else:
-            st.write(data.head(2))
-        #Show entire Dataset
-        if st.checkbox('Show all Dataset'):
-            st.write(data)
+    #data = explore_data(my_dataset)
 
-        #Show Column Names
-        if st.checkbox('Show Column Names'):
-            st.write(data.columns)
+        DATA_URL = ('resources/train.csv')
 
-        #Show Dimensions
-        data_dim = st.selectbox('What Dimensions Do You Want to See?',['Rows','Columns'])
-        if data_dim == 'Rows':
-            st.text('Showing Rows')
-            st.write(data.shape[0])
-        elif data_dim == 'Columns':
-            st.text('Showing Columns')
-            st.write(data.shape[1])
+        @st.cache(allow_output_mutation=True)
+        def load_data(nrows):
+            data = pd.read_csv(DATA_URL, nrows=nrows)
+            lowercase = lambda x: str(x).lower()
+            data.rename(lowercase, axis='columns', inplace=True)
+            return data
 
-        #Select a Column
-        col = st.selectbox('Select Column', ('sentiment','message','tweetid'))
-        if col == 'sentiment':
-            st.write(data['sentiment'])
-        elif col == 'message':
-            st.write(data['message'])
-        elif col == 'tweetid':
-            st.write(data['tweetid'])
-        else:
-            st.write('Select Column')
+        data_load_state = st.text('Loading data...')
+        data = load_data(40000)
+        data_load_state.text("Done! (using st.cache)")
 
-        #Add Plots
-        if st.checkbox('Show Bar Plot with Matplotlib')
-        st.write(data.plot(kind='bar'))
-        st.pyplot()
+        #Minimal cleaning
+        import re
 
-        #Bar Chart
-        if st.checkbox('Show Bar Chart Plot'):
-            group = data.groupby('sentiment')
-            st.bar_chart(group)
+        #showing what our dataset is
+        if st.checkbox('Choose to Preview Dataset and Visualisations'):
+            #data = explore_data(my_dataset)
+            @st.cache(allow_output_mutation=True)
+            def remove_URL(message):
+                url = re.compile(r'https?://\S+|www\.\S+')
+                return url.sub(r'',message)
+            if st.checkbox('Choose to remove URLs from data (may take long to run)'):
+                st.markdown("***Unselect the box and stop running if it takes longer than 5 minutes***.")
+                st.text("This selection allows you to clean URL's for the tweets but may take longer to run.")
+                st.text("Leave this selection unselected for better run times.")
+                data['message']=data['message'].apply(lambda x : remove_URL(x))
+            if st.button('Head'):
+                st.write(data.head())
+            elif st.button('Tail'):
+                st.write(data.tail())
+            else:
+                st.write(data.head(2))
+            #Show entire Dataset
+            if st.checkbox('Show all Dataset'):
+                st.write(data)
 
-        #Show Line Plot
-        if st.checkbox("Show Line Plot")
-        st.line_chart(data)
+            #Show Column Names
+            if st.checkbox('Show Column Names'):
+                st.write(data.columns)
+
+            #Show Dimensions
+            data_dim = st.selectbox('What Dimensions Do You Want to See?',['Rows','Columns'])
+            if data_dim == 'Rows':
+                st.text('Showing Rows')
+                st.write(data.shape[0])
+            elif data_dim == 'Columns':
+                st.text('Showing Columns')
+                st.write(data.shape[1])
+
+            #Select a Column
+            col = st.selectbox('Select Column', ('sentiment','message','tweetid'))
+            if col == 'sentiment':
+                st.write(data['sentiment'])
+            elif col == 'message':
+                st.write(data['message'])
+            elif col == 'tweetid':
+                st.write(data['tweetid'])
+            else:
+                st.write('Select Column')
+
+            #Add Plots
+
+            #Bar Chart
+            if st.checkbox('Show Bar Chart Plot for distribution of tweets across sentiment classes'):
+                st.write(data['sentiment'].value_counts())
+                st.bar_chart(data['sentiment'].value_counts())
+
+            #Add Pie Chart
+            if st.checkbox('Show Pie Chart for proportion of each sentiment class'):
+                pie_labels = ['Pro', 'News', 'Neutral', 'Anti']
+                fig1 = go.Figure (data=[go.Pie(labels=pie_labels, values = data['sentiment'].value_counts())])
+                st.plotly_chart(fig1)
+
+            #Word count for distribution
+                    # Define subplot to see graphs side by side
+            if st.checkbox('Show Word Count Plot for distribution of tweets across sentiment classes'):
+                data['word_count'] = data['message'].apply(lambda x: len(x.split()))
+
+                # Split so we can use updated train set with new feature
+                data = data[:len(data)]
+
+                # Define subplot to see graphs side by side
+                fig, ax = plt.subplots(figsize = (10, 5))
+
+                #create graphs
+                sns.kdeplot(data['word_count'][data['sentiment'] == 0], shade = True, label = 'Neutral')
+                sns.kdeplot(data['word_count'][data['sentiment'] == 1], shade = True, label = 'Pro')
+                sns.kdeplot(data['word_count'][data['sentiment'] == 2], shade = True, label = 'News')
+                sns.kdeplot(data['word_count'][data['sentiment'] == -1], shade = True, label = 'Anti')
+
+                # Set title and plot
+                plt.title('Distribution of Tweet Word Count')
+                plt.xlabel('Word Count')
+                plt.ylabel('Sentiments Proportions')
+                st.pyplot()
+            #Show word cloud chart
+            if st.checkbox('Show Word Cloud to see the most words in the climate change tweets'):
+                from wordcloud import WordCloud
+                Allwords= ' '.join( [tweets for tweets in data['message']] )
+                wordCloud= WordCloud(width= 700, height= 500, random_state= 21, max_font_size= 150).generate(Allwords)
+                plt.imshow(wordCloud, interpolation= 'bilinear')
+                plt.axis('off')
+                st.pyplot()
+
+            #Show Ngram bar chart
+            @st.cache(allow_output_mutation=True)
+            def get_top_tweet_unigrams(corpus, n=None):
+                vec = CountVectorizer(ngram_range=(1, 1)).fit(corpus)
+                bag_of_words = vec.transform(corpus)
+                sum_words = bag_of_words.sum(axis=0)
+                words_freq = [(word, sum_words[0, idx]) for word, idx in vec.vocabulary_.items()]
+                words_freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
+                return words_freq[:n]
+            if st.checkbox('Show Unigram Plot for top 20 common single words in tweets'):
+                plt.figure(figsize=(10,5))
+                top_tweet_unigrams=get_top_tweet_unigrams(data['message'])[:20]
+                x,y=map(list,zip(*top_tweet_unigrams))
+                sns.barplot(x=y,y=x)
+                st.pyplot()
 
 
-        #Add Pie Chart
-        if st.checkbox('Pie Chart'):
-            group =data.groupby('sentiment')
-            st.pie_chart(data)
 
-        #anyone can add from here
-        
-        
-
-
-
+            #anyone can add from here
 
     # Building out the predication page
     if selection == "Prediction":
@@ -237,7 +318,7 @@ def main():
                 predictor == load_prediction_models("resources/Naive_base.pkl")
                 prediction = predictor.predict(vect_text)
                 #st.write(prediction)
-            
+
             final_results= get_keys(prdiction,prediction_labels)
 
             # When model has successfully run, will print prediction
@@ -245,7 +326,7 @@ def main():
             # more human interpretable.
             st.success("Text Categorized as: {}".format(final_results))
 
-    
+
 
     # Building out the Conclusion page
     if selection == "Conclusion":
