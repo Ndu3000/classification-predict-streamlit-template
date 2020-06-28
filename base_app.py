@@ -28,11 +28,30 @@ import joblib,os
 # Data dependencies
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plot
+import seaborn as sns 
+#from PIL import image
 import pprint
+#import spacy
+#nlp= spacy.load('en')
+#NLP Packages
+#from wordcloud import WordCloud
+#from textblob import TextBlob 
 
 # Vectorizer
-news_vectorizer = open("resources/tfidfvect.pkl","rb")
+news_vectorizer = open("resources/tfidfcountvect.pkl","rb")  #Vectorized with both the tfidf and counterVector combined using sparse
 tweet_cv = joblib.load(news_vectorizer) # loading your vectorizer from the pkl file
+
+#Models
+def load_predictions_models(model_file):
+    load_prediction_models = joblib.load(open(os.path.join(model_file),"rb"))
+    return load_prediction_models
+
+#creating dict keys for predictions
+def get_keys(val,my_dict):
+    for key,value in my_dict.items():
+        if val == value:
+            return key
 
 # Load your raw data
 raw = pd.read_csv("resources/train.csv")
@@ -48,7 +67,7 @@ def main():
 
     # Creating sidebar with selection box -
     # you can create multiple pages this way
-    options = ["Information", "Exploratory Data Analysis", "Prediction", "Conclusion"]
+    options = ["Information", "Exploratory Data Analysis", "Prediction", "NLP","Conclusion"]
     selection = st.sidebar.selectbox("Choose Option", options)
 
     # Building out the "Information" page
@@ -112,6 +131,7 @@ def main():
 
     # Building out the Exploratory Data Analysis page
     if selection == "Exploratory Data Analysis":
+        st.markdown("Exploratory Data Analysis refers to the critical process of performing initial investigations on data so as to discover patterns,to spot anomalies,to test hypothesis and to check assumptions with the help of summary statistics and diagramatic representations")
         st.info("Tweet Data Insights")
         st.markdown("describe what data insights are here")
 
@@ -124,23 +144,17 @@ def main():
         train_df = pd.read_csv(os.path.join(dataset))
         return train_df
 
-    data = explore_data(my_dataset)
-
-
-    if selection == "Exploratory Data Analysis":
-        st.header("Exploratory Data Analysis refers to the critical process of performing initial investigations on data so as to discover patterns,to spot anomalies,to test hypothesis and to check assumptions with the help of summary statistics and diagramatic representations")
-        st.info("Tweet Data Insights")
-        st.markdown("describe what data insights are here")
+    data = explore_data(my_dataset) 
         
-
-        if st.checkbox('Preview Dataset'):
-            #data = explore_data(my_dataset)
-            if st.button('Head'):
-                st.write(data.head())
-            elif st.button('Tail'):
-                st.write(data.tail())
-            else:
-                st.write(data.head(2))
+    #showing what our dataset is
+    if st.checkbox('Preview Dataset'):
+        #data = explore_data(my_dataset)
+        if st.button('Head'):
+            st.write(data.head())
+        elif st.button('Tail'):
+            st.write(data.tail())
+        else:
+            st.write(data.head(2))
         #Show entire Dataset
         if st.checkbox('Show all Dataset'):
             st.write(data)
@@ -158,10 +172,6 @@ def main():
             st.text('Showing Columns')
             st.write(data.shape[1])
 
-        #Show Summary
-        st.checkbox('Show Summary of Datasets')
-        st.write(data.describe)
-
         #Select a Column
         col = st.selectbox('Select Column', ('sentiment','message','tweetid'))
         if col == 'sentiment':
@@ -174,24 +184,29 @@ def main():
             st.write('Select Column')
 
         #Add Plots
-        st.checkbox('Show Bar Plot with Matplotlib')
+        if st.checkbox('Show Bar Plot with Matplotlib')
         st.write(data.plot(kind='bar'))
         st.pyplot()
 
-        #Group
-        if st.checkbox('Show Bart Chart Plot'):
-            group = data.groupby('put in name of the column HERE')
+        #Bar Chart
+        if st.checkbox('Show Bar Chart Plot'):
+            group = data.groupby('sentiment')
             st.bar_chart(group)
+
+        #Show Line Plot
+        if st.checkbox("Show Line Plot")
+        st.line_chart(data)
 
 
         #Add Pie Chart
+        if st.checkbox('Pie Chart'):
+            group =data.groupby('sentiment')
+            st.pie_chart(data)
 
-        st.checkbox('Preview DataFrame')
-        st.checkbox('Show All DataFrame')
-        st.checkbox('Show All Column Names')
-            
-        if st.subheader("EDA Visualisations"):
-            st.checkbox('Show Visuals')
+        #anyone can add from here
+        
+        
+
 
 
 
@@ -200,19 +215,37 @@ def main():
         st.info("Prediction with ML Models")
         # Creating a text box for user input
         tweet_text = st.text_area("Enter Text","Type Here")
+        all_ml_models= ["LinearSVC", "LogisticRegression", "Naive Base"]
+        model_choice = st.selectbox("Choose ML Model", all_ml_models)
+        prediction_labels = {'News': 2, 'Pro': 1, 'Neutral': 0, 'Anti': -1}
 
         if st.button("Classify"):
+            st.text("Original test ::\n{}".format(tweet_text))
             # Transforming user input with vectorizer
             vect_text = tweet_cv.transform([tweet_text]).toarray()
             # Load your .pkl file with the model of your choice + make predictions
             # Try loading in multiple models to give the user a choice
-            predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
-            prediction = predictor.predict(vect_text)
+            if model_choice == 'LinearSVC':
+                predictor == load_prediction_models("resources/LinearSVC.pkl")
+                prediction = predictor.predict(vect_text)
+                #st.write(prediction)
+            elif model_choice == 'LogisticRegression':
+                predictor == load_prediction_models("resources/LogisticRegression.pkl")
+                prediction = predictor.predict(vect_text)
+                #st.write(prediction)
+            elif model_choice == 'Naive Base':
+                predictor == load_prediction_models("resources/Naive_base.pkl")
+                prediction = predictor.predict(vect_text)
+                #st.write(prediction)
+            
+            final_results= get_keys(prdiction,prediction_labels)
 
             # When model has successfully run, will print prediction
             # You can use a dictionary or similar structure to make this output
             # more human interpretable.
-            st.success("Text Categorized as: {}".format(prediction))
+            st.success("Text Categorized as: {}".format(final_results))
+
+    
 
     # Building out the Conclusion page
     if selection == "Conclusion":
