@@ -72,7 +72,7 @@ def main():
 
     # Creating sidebar with selection box -
     # you can create multiple pages this way
-    options = ["Information", "Exploratory Data Analysis", "Prediction", "NLP","Conclusion"]
+    options = ["Information", "Exploratory Data Analysis", "Prediction", "Profile"]
     selection = st.sidebar.selectbox("Choose Option", options)
 
     # Building out the "Information" page
@@ -290,41 +290,72 @@ def main():
 
             #anyone can add from here
 
-    # Building out the predication page
+    # Building out the predication 
+    #loading models
+    def load_prediction_models(models):
+        loaded_models =joblib.load(open(os.path.join(models),"rb"))
+        return loaded_models
+
     if selection == "Prediction":
         st.info("Prediction with ML Models")
+        st.markdown("Predictive modeling is a process that uses data and statistics to predict outcomes with classification data models. These models can also be used to predict our twitter data. We get predictions from models such as Logistic Regression, LinearSVC, Naive Bayes Classifier and many more.")
+        st.markdown("LogisticRegression- Is used to obtain odds ratio in the presence of more than one exploratory variable. It explain the relationship between one dependent binary variable and one or more independent variables")
+        st.markdown("Support Vector Machine- It analyzes data used for classification and rehression analysis. It separates data points using hyperplane with the largest amount of margin")
+        st.markdown("Naive Bayes Classifier- It uses the principle of Bayes Theorem to make classification. This model is quick and simple to build but does it is not the most accurate. Its advantage is that it is useful on large dataset")
         # Creating a text box for user input
         tweet_text = st.text_area("Enter Text","Type Here")
+        # Transforming user input with vectorizer
+        vect_text = tweet_cv.transform([tweet_text]).toarray()
+        #load some models used
+        all_models= ["LinearSVC", "LogisticRegression", "Naive Bayes Classifier"]
+        model_choice= st.selectbox("Choose ML Model", all_models)
+
+        def load_prediction_models(models):
+                loaded_models =joblib.load(open(os.path.join(models),"rb"))
+                return loaded_models
 
         if st.button("Classify"):
-            # Transforming user input with vectorizer
-            vect_text = tweet_cv.transform([tweet_text]).toarray()
             # Load your .pkl file with the model of your choice + make predictions
             # Try loading in multiple models to give the user a choice
-            predictor = joblib.load(open(os.path.join("resources/clf_ndu.pkl"),"rb"))
-            prediction = predictor.predict(vect_text)
+            if model_choice == 'LinearSVC':
+                predictor = joblib.load(open(os.path.join("resources/clf_ndu.pkl"),"rb"))
+                prediction = predictor.predict(vect_text)
+            
+            elif model_choice == 'LogisticRegression':
+                predictor = joblib.load(open(os.path.join("resources/lr_model_ndu.pkl"),"rb"))
+                prediction = predictor.predict(vect_text)
+            
+            elif model_choice == 'Naive Bayes Classifier':
+                predictor = joblib.load(open(os.path.join("resources/nb_model_ndu.pkl"),"rb"))
+                prediction = predictor.predict(vect_text)
 
             def getAnalysis(prediction):
                 if prediction == -1:
-                    return "Anti (i.e. a denier of man-made climate change)"
+                    return "Anti  (i.e. a denier of man-made climate change)"
                 elif prediction ==0:
-                    return "Neutral (i.e. Neutral in beliefs about man-made climate change)"
+                    return "Neutral  (i.e. Neutral in beliefs about man-made climate change)"
                 elif prediction == 1:
-                    return "Pro (i.e. Believes that climate change is man-made)"
+                    return "Pro  (i.e. Believes that climate change is man-made)"
                 else:
-                    return "News (i.e. Has factual sources that climate change is man-made)"
+                    return "News  (i.e. Has factual sources that climate change is man-made)"
 
             # When model has successfully run, will print prediction
             # You can use a dictionary or similar structure to make this output
             # more human interpretable.
             st.success("Text Categorized as: {}".format(getAnalysis(prediction)))
 
+#Building Profile Page
+if selection == "Profile":
+    st.info("Founders Information")
+    st.markdown("Nduduzo Phili")
+    st.markdown("Victoria Chepape")
+    st.markdown("Nondumiso Magudulela")
+    st.markdown("Jamie Japhta ")
+    st.markdown("Oarabile Tiro")
 
+       
 
-    # Building out the Conclusion page
-    #if selection == "Conclusion":
-        #st.info("Conclusion")
-        #st.markdown("Write what we concluded on here")
+    
 
 
 # Required to let Streamlit instantiate our web app.
