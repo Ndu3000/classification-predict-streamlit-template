@@ -344,14 +344,14 @@ def main():
             # more human interpretable.
             st.success("Text Categorized as: {}".format(getAnalysis(prediction)))
 
-#Building Profile Page
-if selection == "Profile":
-    st.info("Founders Information")
-    st.markdown("Nduduzo Phili")
-    st.markdown("Victoria Chepape")
-    st.markdown("Nondumiso Magudulela")
-    st.markdown("Jamie Japhta ")
-    st.markdown("Oarabile Tiro")
+    #Building Profile Page
+    if selection == "Profile":
+        st.info("Founders Information")
+        st.markdown("Nduduzo Phili")
+        st.markdown("Victoria Chepape")
+        st.markdown("Nondumiso Magudulela")
+        st.markdown("Jamie Japhta ")
+        st.markdown("Oarabile Tiro")
 
        
 
