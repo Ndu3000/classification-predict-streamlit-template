@@ -67,7 +67,7 @@ def main():
     # Creates a main title and subheader on your page -
     # these are static across all pages
     st.title("Tweet Classifer")
-    st.subheader("Climate change tweet classification")
+    st.subheader("Climate Change Tweet Classification")
     # Using PIL
 
     # Creating sidebar with selection box -
@@ -346,12 +346,12 @@ def main():
 
     #Building Profile Page
     if selection == "Profile":
-        st.info("Explore Data Scientists")
-        st.markdown("Nduduzo Phili  0716709471")
-        st.markdown("Victoria Chepape  0797433734")
-        st.markdown("Nondumiso Magudulela  0825210964")
-        st.markdown("Jamie Japhta  0731947015")
-        st.markdown("Oarabile Tiro  0787359249")
+        st.info("Explore Academy Data Scientists")
+        st.markdown("Nduduzo Phili :0716709471")
+        st.markdown("Victoria Chepape :0797433734")
+        st.markdown("Nondumiso Magudulela :0825210964")
+        st.markdown("Jamie Japhta :0731947015")
+        st.markdown("Oarabile Tiro :0787359249")
 
        
 
