@@ -299,9 +299,9 @@ def main():
     if selection == "Prediction":
         st.info("Prediction with ML Models")
         st.markdown("Predictive modeling is a process that uses data and statistics to predict outcomes with classification data models. These models can also be used to predict our twitter data. We get predictions from models such as Logistic Regression, LinearSVC, Naive Bayes Classifier and many more.")
-        st.markdown("LogisticRegression- Is used to obtain odds ratio in the presence of more than one exploratory variable. It explain the relationship between one dependent binary variable and one or more independent variables")
-        st.markdown("Support Vector Machine- It analyzes data used for classification and rehression analysis. It separates data points using hyperplane with the largest amount of margin")
-        st.markdown("Naive Bayes Classifier- It uses the principle of Bayes Theorem to make classification. This model is quick and simple to build but does it is not the most accurate. Its advantage is that it is useful on large dataset")
+        st.markdown("LogisticRegression- Is used to obtain odds ratios in the presence of more than one exploratory variable. It explains the relationship between one dependent binary variable and one or more independent variables")
+        st.markdown("Support Vector Machine- It analyzes data used for classification and regression analysis. It separates data points using hyperplane with the largest amount of margin")
+        st.markdown("Naive Bayes Classifier- It uses the principle of Bayes Theorem to make classification. This model is quick and simple to build but it is not the most accurate. Its advantage is that it is useful for large dataset")
         # Creating a text box for user input
         tweet_text = st.text_area("Enter Text","Type Here")
         # Transforming user input with vectorizer
@@ -346,12 +346,12 @@ def main():
 
     #Building Profile Page
     if selection == "Profile":
-        st.info("Founders Information")
-        st.markdown("Nduduzo Phili")
-        st.markdown("Victoria Chepape")
-        st.markdown("Nondumiso Magudulela")
-        st.markdown("Jamie Japhta ")
-        st.markdown("Oarabile Tiro")
+        st.info("Explore Data Scientists")
+        st.markdown("Nduduzo Phili  0716709471")
+        st.markdown("Victoria Chepape  0797433734")
+        st.markdown("Nondumiso Magudulela  0825210964")
+        st.markdown("Jamie Japhta  0731947015")
+        st.markdown("Oarabile Tiro  0787359249")
 
        
 
